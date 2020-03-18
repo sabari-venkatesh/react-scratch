@@ -1,6 +1,7 @@
-const pkg = require("../package.json");
+const pkg = require("./package.json");
 
 const __ISDEV__ = process.env.NODE_ENV !== "production";
+console.log(process.env.NODE_ENV);
 
 module.exports = opt => {
   return {
