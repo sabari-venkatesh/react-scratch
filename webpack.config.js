@@ -1,15 +1,16 @@
-import { join, resolve } from "path";
-import pkg from "./package.json";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import webpack from "webpack";
+const { join, resolve } = require("path");
+const webpack = require("webpack");
+const pkg = require("./package.json");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const config = (env, argv) => {
-  const __ISDEV__ = argv.mode !== "production";
+  const mode = argv.mode || "development";
+  const __ISDEV__ = mode !== "production";
 
   return {
-    mode: argv.mode || "development",
+    mode,
     devtool: __ISDEV__ ? "cheap-module-source-map" : "source-map",
     context: join(__dirname, "src"),
     entry: "./app.js",
@@ -31,6 +32,7 @@ const config = (env, argv) => {
     module: {
       rules: [{
         test: /\.css$/i,
+        exclude: /node_modules/,
         use: [__ISDEV__ ? "style-loader" : MiniCssExtractPlugin.loader,
         {
           loader: "css-loader",
@@ -82,11 +84,30 @@ const config = (env, argv) => {
         },
       }, {
         test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: [{
           loader: "babel-loader",
           options: {
-            cacheDirectory: true,
-            compact: !__ISDEV__
+            babelrc: false,
+            configFile: false,
+            presets: [
+              // A Babel preset that can automatically determine the Babel plugins and polyfills
+              // https://github.com/babel/babel-preset-env
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    browsers: pkg.browserslist[mode],
+                  },
+                  forceAllTransforms: !__ISDEV__, // for UglifyJS
+                  modules: false,
+                  useBuiltIns: false,
+                  debug: true,
+                },
+              ],
+            ],
+            // cacheDirectory: false,
+            // compact: !__ISDEV__
           }
         }]
       }
@@ -116,11 +137,12 @@ const config = (env, argv) => {
       !__ISDEV__ && new MiniCssExtractPlugin({
         filename: "[name].[contenthash:8].css",
         chunkFilename: "[name].[contenthash:8].chunk.css"
-      })].filter(Boolean),
+      }),
+    ].filter(Boolean),
     resolve: {
       modules: ["node_modules", "src"]
     }
   }
 }
 
-export default config;
+module.exports = config;
