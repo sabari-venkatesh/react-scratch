@@ -99,6 +99,7 @@ const config = (env, argv) => {
                   targets: {
                     browsers: pkg.browserslist[mode],
                   },
+                  useBuiltIns: "entry",
                   forceAllTransforms: !__ISDEV__, // for UglifyJS
                   modules: false,
                   useBuiltIns: false,
