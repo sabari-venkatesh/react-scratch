@@ -16,6 +16,7 @@ body {
   color: var(--mainColor);
   font-family: system-ui;
   overflow-wrap: break-word;
+  background: url("./images/photo.jpg");
 }
 
 @media (--viewport-medium) {

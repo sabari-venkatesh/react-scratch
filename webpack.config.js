@@ -1,35 +1,39 @@
-const { join, resolve } = require("path");
-const webpack = require("webpack");
-const pkg = require("./package.json");
+const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 // regex patterns 
 
-
+const SRC_DIR = resolve(__dirname, "src");
+const BUILD_DIR = resolve(__dirname, "build");
+const CONFIG_DIR = resolve(__dirname, "config");
 
 const config = (env, argv) => {
-  const mode = argv.mode || "development";
-  const __ISDEV__ = mode !== "production";
 
-  const IMAGES = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
-  const STYLES = /\.css$/i;
-  const ASSET_LIMIT = 4096;
-  const ASSET_NAME = __ISDEV__
-    ? "[path][name].[ext]?[hash:8]"
-    : "[hash:8].[ext]";
+  const
+    mode = argv.mode || "development",
+    ISDEV = mode === "development",
+    ISPROD = mode === "production",
+    // regex patterns to match the resources
+    IMAGES = /\.(bmp|gif|jpg|jpeg|png|svg)$/,
+    STYLES = /\.css$/i,
+    ASSET_LIMIT = 4096,
+    ASSET_NAME = ISDEV
+      ? "[path][name].[ext]?[hash:8]"
+      : "[hash:8].[ext]";
+
   return {
     mode,
-    devtool: __ISDEV__ ? "cheap-module-source-map" : "source-map",
-    context: join(__dirname, "src"),
+    devtool: ISDEV ? "cheap-module-source-map" : "source-map",
+    context: SRC_DIR,
     entry: "./app.js",
     output: {
       filename: "[name].[contenthash].js",
-      path: resolve(__dirname, "build"),
+      path: BUILD_DIR,
       publicPath: "/",
     },
-    ...(__ISDEV__ && {
+    ...(ISDEV && {
       devServer: {
         historyApiFallback: true,
         compress: true,
@@ -45,14 +49,14 @@ const config = (env, argv) => {
         {
           test: /\.css$/i,
           exclude: /node_modules/,
-          use: [__ISDEV__ ? "style-loader" : MiniCssExtractPlugin.loader,
+          use: [ISDEV ? "style-loader" : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              sourceMap: !__ISDEV__,
+              sourceMap: ISPROD,
               modules: {
-                localIdentName: __ISDEV__
+                localIdentName: ISDEV
                   ? "[name]-[local]-[hash:base64:5]"
                   : "[hash:base64:5]",
               }
@@ -62,32 +66,16 @@ const config = (env, argv) => {
             loader: "postcss-loader",
             options: {
               ident: "postcss",
-              plugins: [
-                require("postcss-import")(),
-                require("postcss-calc")(),
-                require("postcss-flexbugs-fixes")(),
-                require("postcss-preset-env")({
-                  stage: 1,
-                  autoprefixer: {
-                    flexbox: "no-2009",
-                  },
-                  // https://github.com/csstools/postcss-preset-env/blob/master/src/lib/plugins-by-id.js#L36
-                  features: {
-                    "nesting-rules": true,
-                    "color-functional-notation": true
-                  },
-                  browsers: pkg.browserslist[mode]
-                }),
-                ...(__ISDEV__ ? [] : [
-                  require("cssnano")({
-                    preset: ["default", {
-                      discardComments: { removeAll: true }
-                    }]
-                  })
-                ])
-              ],
-              sourceMap: !__ISDEV__
-            }
+              sourceMap: ISPROD,
+              config: {
+                // pass variables to the config file
+                ctx: {
+                  env: mode,
+                },
+                // dir to look for postcss.config.js file
+                path: CONFIG_DIR,
+              },
+            },
           }],
         },
 
@@ -103,14 +91,14 @@ const config = (env, argv) => {
                   loader: "svg-url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT, // 4kb
+                    limit: ASSET_LIMIT,
                   },
                 },
                 {
                   loader: "url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT, // 4kb
+                    limit: ASSET_LIMIT,
                   },
                 }
               ]
@@ -128,17 +116,17 @@ const config = (env, argv) => {
         // rules for scripts
         {
           test: /\.(js|jsx)$/,
-          include: resolve(__dirname, "src"),
+          include: SRC_DIR,
           exclude: /node_modules/,
           use: [{
             loader: "babel-loader",
             options: {
-              root: resolve(__dirname, "config"),
+              root: CONFIG_DIR,
               babelrc: false,
               envName: mode,
-              cacheDirectory: __ISDEV__,
+              cacheDirectory: ISDEV,
               cacheCompression: false,
-              compact: !__ISDEV__,
+              compact: ISPROD,
               ignore: ["node_modules", "build"],
             }
           }]
@@ -149,8 +137,10 @@ const config = (env, argv) => {
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
+        title: "Hello world",
+        template: "index.html",
         inject: true,
-        ...(!__ISDEV__ && {
+        ...(ISPROD && {
           hash: true,
           minify: {
             removeComments: true,
@@ -166,13 +156,27 @@ const config = (env, argv) => {
           },
         })
       }),
-      !__ISDEV__ && new MiniCssExtractPlugin({
+      ISPROD && new MiniCssExtractPlugin({
         filename: "[name].[contenthash:8].css",
         chunkFilename: "[name].[contenthash:8].chunk.css"
       }),
     ].filter(Boolean),
     resolve: {
       modules: ["node_modules", "src"]
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            chunks: 'initial',
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+          },
+        },
+      },
+    },
+    performance: {
+      maxAssetSize: 250000
     }
   }
 }

@@ -16,7 +16,7 @@ module.exports = (api) => {
           },
           useBuiltIns: false,
           modules: false, // Needed for tree shaking to work.
-          debug: true,
+          debug: false,
         },
       ],
       ["@babel/preset-react", { development: api.env("development") }]
