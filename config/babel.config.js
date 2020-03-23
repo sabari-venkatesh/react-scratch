@@ -1,9 +1,10 @@
 const pkg = require("../package.json");
 
-module.exports = (api) => {
+module.exports = api => {
   // https://babeljs.io/docs/en/config-files#apicache
   // api.env("development") returns true if development environment
-  api.cache.using(() => api.env("development"));
+  // api.cache.using(() => api.env("development"));
+  const ISHOT = process.env.WEBPACK_DEV_SERVER;
   return {
     presets: [
       // A Babel preset that can automatically determine the Babel plugins and polyfills
@@ -12,15 +13,15 @@ module.exports = (api) => {
         "@babel/preset-env",
         {
           targets: {
-            browsers: pkg.browserslist[api.env()],
+            browsers: pkg.browserslist[api.env()]
           },
           useBuiltIns: false,
           modules: false, // Needed for tree shaking to work.
-          debug: false,
-        },
+          debug: false
+        }
       ],
       ["@babel/preset-react", { development: api.env("development") }]
     ],
-    plugins: []
-  }
+    plugins: ISHOT ? [] : ["react-hot-loader/babel"]
+  };
 };

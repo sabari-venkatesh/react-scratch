@@ -1,7 +1,6 @@
-const pkg = require('../package.json');
+const pkg = require("../package.json");
 
 module.exports = ({ options: { env } }) => {
-
   const ISDEV = env !== "production";
 
   return {
@@ -11,10 +10,11 @@ module.exports = ({ options: { env } }) => {
       require("postcss-import")(),
       require("postcss-calc")(),
       require("postcss-flexbugs-fixes")(),
+      require("postcss-mixins")(),
       require("postcss-preset-env")({
         stage: 2,
         autoprefixer: {
-          flexbox: "no-2009",
+          flexbox: "no-2009"
         },
         // https://github.com/csstools/postcss-preset-env/blob/master/src/lib/plugins-by-id.js#L36
         features: {
@@ -23,13 +23,18 @@ module.exports = ({ options: { env } }) => {
         },
         browsers: pkg.browserslist[env]
       }),
-      ...(ISDEV ? [] : [
-        require("cssnano")({
-          preset: ["default", {
-            discardComments: { removeAll: true }
-          }]
-        })
-      ])
-    ],
-  }
+      ...(ISDEV
+        ? []
+        : [
+            require("cssnano")({
+              preset: [
+                "default",
+                {
+                  discardComments: { removeAll: true }
+                }
+              ]
+            })
+          ])
+    ]
+  };
 };

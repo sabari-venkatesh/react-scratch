@@ -3,35 +3,35 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-// regex patterns 
+// regex patterns
 
 const SRC_DIR = resolve(__dirname, "src");
 const BUILD_DIR = resolve(__dirname, "build");
 const CONFIG_DIR = resolve(__dirname, "config");
 
 const config = (env, argv) => {
-
-  const
-    mode = argv.mode || "development",
+  const mode = argv.mode || "development",
     ISDEV = mode === "development",
     ISPROD = mode === "production",
     // regex patterns to match the resources
     IMAGES = /\.(bmp|gif|jpg|jpeg|png|svg)$/,
     STYLES = /\.css$/i,
     ASSET_LIMIT = 4096,
-    ASSET_NAME = ISDEV
-      ? "[path][name].[ext]?[hash:8]"
-      : "[hash:8].[ext]";
+    ASSET_NAME = ISDEV ? "[path][name].[ext]?[hash:8]" : "[hash:8].[ext]";
 
   return {
     mode,
     devtool: ISDEV ? "cheap-module-source-map" : "source-map",
     context: SRC_DIR,
-    entry: "./app.js",
+    entry: "./index.js",
     output: {
-      filename: "[name].[contenthash].js",
       path: BUILD_DIR,
-      publicPath: "/",
+      pathinfo: ISPROD,
+      filename: ISDEV ? "[name].js" : "[name].[chunkhash:8].js",
+      chunkFilename: ISDEV
+        ? "[name].chunk.js"
+        : "[name].[chunkhash:8].chunk.js",
+      publicPath: "/"
     },
     ...(ISDEV && {
       devServer: {
@@ -40,7 +40,7 @@ const config = (env, argv) => {
         clientLogLevel: "none",
         hot: true,
         overlay: false,
-        open: true,
+        open: true
       }
     }),
     module: {
@@ -49,34 +49,36 @@ const config = (env, argv) => {
         {
           test: /\.css$/i,
           exclude: /node_modules/,
-          use: [ISDEV ? "style-loader" : MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              importLoaders: 1,
-              sourceMap: ISPROD,
-              modules: {
-                localIdentName: ISDEV
-                  ? "[name]-[local]-[hash:base64:5]"
-                  : "[hash:base64:5]",
+          use: [
+            ISDEV ? "style-loader" : MiniCssExtractPlugin.loader,
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+                sourceMap: ISPROD,
+                modules: {
+                  localIdentName: ISDEV
+                    ? "[name]-[local]-[hash:base64:5]"
+                    : "[hash:base64:5]"
+                }
               }
             },
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              ident: "postcss",
-              sourceMap: ISPROD,
-              config: {
-                // pass variables to the config file
-                ctx: {
-                  env: mode,
-                },
-                // dir to look for postcss.config.js file
-                path: CONFIG_DIR,
-              },
-            },
-          }],
+            {
+              loader: "postcss-loader",
+              options: {
+                ident: "postcss",
+                sourceMap: ISPROD,
+                config: {
+                  // pass variables to the config file
+                  ctx: {
+                    env: mode
+                  },
+                  // dir to look for postcss.config.js file
+                  path: CONFIG_DIR
+                }
+              }
+            }
+          ]
         },
 
         // rules for images
@@ -91,15 +93,15 @@ const config = (env, argv) => {
                   loader: "svg-url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT,
-                  },
+                    limit: ASSET_LIMIT
+                  }
                 },
                 {
                   loader: "url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT,
-                  },
+                    limit: ASSET_LIMIT
+                  }
                 }
               ]
             },
@@ -107,8 +109,8 @@ const config = (env, argv) => {
             {
               loader: "file-loader",
               options: {
-                name: ASSET_NAME,
-              },
+                name: ASSET_NAME
+              }
             }
           ]
         },
@@ -118,18 +120,20 @@ const config = (env, argv) => {
           test: /\.(js|jsx)$/,
           include: SRC_DIR,
           exclude: /node_modules/,
-          use: [{
-            loader: "babel-loader",
-            options: {
-              root: CONFIG_DIR,
-              babelrc: false,
-              envName: mode,
-              cacheDirectory: ISDEV,
-              cacheCompression: false,
-              compact: ISPROD,
-              ignore: ["node_modules", "build"],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                root: CONFIG_DIR,
+                babelrc: false,
+                envName: mode,
+                cacheDirectory: ISDEV,
+                cacheCompression: false,
+                compact: ISPROD,
+                ignore: ["node_modules", "build"]
+              }
             }
-          }]
+          ]
         }
       ]
     },
@@ -152,14 +156,15 @@ const config = (env, argv) => {
             keepClosingSlash: true,
             minifyJS: true,
             minifyCSS: true,
-            minifyURLs: true,
-          },
+            minifyURLs: true
+          }
         })
       }),
-      ISPROD && new MiniCssExtractPlugin({
-        filename: "[name].[contenthash:8].css",
-        chunkFilename: "[name].[contenthash:8].chunk.css"
-      }),
+      ISPROD &&
+        new MiniCssExtractPlugin({
+          filename: "[name].[contenthash:8].css",
+          chunkFilename: "[name].[contenthash:8].chunk.css"
+        })
     ].filter(Boolean),
     resolve: {
       modules: ["node_modules", "src"]
@@ -168,17 +173,17 @@ const config = (env, argv) => {
       splitChunks: {
         cacheGroups: {
           commons: {
-            chunks: 'initial',
+            chunks: "initial",
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-          },
-        },
-      },
+            name: "vendors"
+          }
+        }
+      }
     },
     performance: {
       maxAssetSize: 250000
     }
-  }
-}
+  };
+};
 
 module.exports = config;
