@@ -1,4 +1,4 @@
-@define-mixin color $color: red {
+@define-mixin color $color: blue {
   color: $color;
 }
 .title {

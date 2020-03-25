@@ -1,4 +1,5 @@
 const { resolve } = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -23,7 +24,7 @@ const config = (env, argv) => {
     mode,
     devtool: ISDEV ? "cheap-module-source-map" : "source-map",
     context: SRC_DIR,
-    entry: "./index.js",
+    entry: ["./index.js"],
     output: {
       path: BUILD_DIR,
       pathinfo: ISPROD,
@@ -164,7 +165,9 @@ const config = (env, argv) => {
         new MiniCssExtractPlugin({
           filename: "[name].[contenthash:8].css",
           chunkFilename: "[name].[contenthash:8].chunk.css"
-        })
+        }),
+      ISDEV && new webpack.NamedModulesPlugin(),
+      new webpack.HotModuleReplacementPlugin()
     ].filter(Boolean),
     resolve: {
       modules: ["node_modules", "src"]

@@ -1,5 +1,20 @@
+import { AppContainer } from "react-hot-loader";
 import React from "react";
 import { render } from "react-dom";
 import App from "components/App";
 
-render(<App />, document.getElementById("app"));
+const renderApp = Component =>
+  render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById("app")
+  );
+
+renderApp(App);
+
+if (module.hot) {
+  module.hot.accept("components/App", () => {
+    renderApp(App);
+  });
+}

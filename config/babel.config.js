@@ -22,6 +22,10 @@ module.exports = api => {
       ],
       ["@babel/preset-react", { development: api.env("development") }]
     ],
-    plugins: ISHOT ? [] : ["react-hot-loader/babel"]
+    plugins: [
+      "react-hot-loader/babel",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-syntax-dynamic-import"
+    ]
   };
 };
