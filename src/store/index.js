@@ -1,19 +1,18 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import { reducer } from "store/reducers/content-consumer/common";
-import { chats } from "store/reducers/content-consumer/chatbot";
-import { notifications } from "store/reducers/content-creator/notifications";
-import { editProfile } from "store/reducers/content-creator/editProfile";
-import { session } from "store/reducers/common/session";
-import { menus } from "store/reducers/content-consumer/menu";
-import thunk from "redux-thunk";
+import { createStore } from "redux";
+import rootReducer from "store/reducers";
 
-const rootReducer = combineReducers({
-  home: reducer,
-  chats,
-  notifications,
-  editProfile,
-  session,
-  menus
-});
+const makeStore = () => {
+  const store = createStore(rootReducer);
 
-export default createStore(rootReducer, applyMiddleware(thunk));
+  if (module.hot) {
+    module.hot.accept("./reducers/index", () => {
+      // const nextRootReducer = require("./reducers/index");
+      store.replaceReducer(rootReducer);
+      console.log(store.getState());
+    });
+  }
+
+  return store;
+};
+
+export default makeStore;

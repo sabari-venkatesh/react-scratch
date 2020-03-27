@@ -161,13 +161,13 @@ const config = (env, argv) => {
           }
         })
       }),
+      new webpack.NamedModulesPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
       ISPROD &&
         new MiniCssExtractPlugin({
           filename: "[name].[contenthash:8].css",
           chunkFilename: "[name].[contenthash:8].chunk.css"
-        }),
-      ISDEV && new webpack.NamedModulesPlugin(),
-      new webpack.HotModuleReplacementPlugin()
+        })
     ].filter(Boolean),
     resolve: {
       modules: ["node_modules", "src"]
