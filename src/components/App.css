@@ -1,6 +1,0 @@
-@define-mixin color $color: blue {
-  color: $color;
-}
-.title {
-  @mixin color;
-}

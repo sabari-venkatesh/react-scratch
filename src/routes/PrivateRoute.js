@@ -1,13 +1,14 @@
 import React from "react";
 import { Route, Redirect } from "react-router";
-import Auth from "./Auth";
+import { isLoggedIn } from "./Auth";
 
-const AuthRoutes = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  console.log(component);
   return (
     <Route
       {...rest}
       render={props =>
-        Auth.getAuth() ? (
+        isLoggedIn() ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -22,4 +23,4 @@ const AuthRoutes = ({ component: Component, ...rest }) => {
   );
 };
 
-export default AuthRoutes;
+export default PrivateRoute;
