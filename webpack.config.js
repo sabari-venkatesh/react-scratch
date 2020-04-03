@@ -41,7 +41,8 @@ const config = (env, argv) => {
         clientLogLevel: "none",
         hot: true,
         overlay: false,
-        open: true
+        open: true,
+        headers: { "Access-Control-Allow-Origin": "*" }
       }
     }),
     module: {
@@ -139,7 +140,7 @@ const config = (env, argv) => {
       ]
     },
     plugins: [
-      new CleanWebpackPlugin(),
+      ISPROD && new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
         title: "Hello world",
@@ -161,8 +162,7 @@ const config = (env, argv) => {
           }
         })
       }),
-      new webpack.NamedModulesPlugin(),
-      new webpack.HotModuleReplacementPlugin(),
+      ISDEV && new webpack.HotModuleReplacementPlugin(),
       ISPROD &&
         new MiniCssExtractPlugin({
           filename: "[name].[contenthash:8].css",
@@ -170,7 +170,10 @@ const config = (env, argv) => {
         })
     ].filter(Boolean),
     resolve: {
-      modules: ["node_modules", "src"]
+      modules: ["node_modules", "src"],
+      alias: {
+        "react-dom": "@hot-loader/react-dom"
+      }
     },
     optimization: {
       splitChunks: {
