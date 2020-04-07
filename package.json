@@ -7,7 +7,8 @@
     "reinstall": "rimraf node_modules && yarn cache clean && yarn install",
     "start": "webpack-dev-server --mode development",
     "dev": "webpack --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "storybook": "start-storybook -p 9001"
   },
   "browserslist": {
     "production": [
@@ -36,6 +37,9 @@
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.8.6",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-info": "^5.3.18",
+    "@storybook/react": "^5.3.18",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.2",

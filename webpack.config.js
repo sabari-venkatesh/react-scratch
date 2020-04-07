@@ -32,7 +32,7 @@ const config = (env, argv) => {
       chunkFilename: ISDEV
         ? "[name].chunk.js"
         : "[name].[chunkhash:8].chunk.js",
-      publicPath: "/"
+      publicPath: "/",
     },
     ...(ISDEV && {
       devServer: {
@@ -42,8 +42,8 @@ const config = (env, argv) => {
         hot: true,
         overlay: false,
         open: true,
-        headers: { "Access-Control-Allow-Origin": "*" }
-      }
+        headers: { "Access-Control-Allow-Origin": "*" },
+      },
     }),
     module: {
       rules: [
@@ -61,9 +61,9 @@ const config = (env, argv) => {
                 modules: {
                   localIdentName: ISDEV
                     ? "[name]-[local]-[hash:base64:5]"
-                    : "[hash:base64:5]"
-                }
-              }
+                    : "[hash:base64:5]",
+                },
+              },
             },
             {
               loader: "postcss-loader",
@@ -73,14 +73,14 @@ const config = (env, argv) => {
                 config: {
                   // pass variables to the config file
                   ctx: {
-                    env: mode
+                    env: mode,
                   },
                   // dir to look for postcss.config.js file
-                  path: CONFIG_DIR
-                }
-              }
-            }
-          ]
+                  path: CONFIG_DIR,
+                },
+              },
+            },
+          ],
         },
 
         // rules for images
@@ -95,26 +95,26 @@ const config = (env, argv) => {
                   loader: "svg-url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT
-                  }
+                    limit: ASSET_LIMIT,
+                  },
                 },
                 {
                   loader: "url-loader",
                   options: {
                     name: ASSET_NAME,
-                    limit: ASSET_LIMIT
-                  }
-                }
-              ]
+                    limit: ASSET_LIMIT,
+                  },
+                },
+              ],
             },
 
             {
               loader: "file-loader",
               options: {
-                name: ASSET_NAME
-              }
-            }
-          ]
+                name: ASSET_NAME,
+              },
+            },
+          ],
         },
 
         // rules for scripts
@@ -132,12 +132,12 @@ const config = (env, argv) => {
                 cacheDirectory: ISDEV,
                 cacheCompression: false,
                 compact: ISPROD,
-                ignore: ["node_modules", "build"]
-              }
-            }
-          ]
-        }
-      ]
+                ignore: ["node_modules", "build"],
+              },
+            },
+          ],
+        },
+      ],
     },
     plugins: [
       ISPROD && new CleanWebpackPlugin(),
@@ -158,22 +158,23 @@ const config = (env, argv) => {
             keepClosingSlash: true,
             minifyJS: true,
             minifyCSS: true,
-            minifyURLs: true
-          }
-        })
+            minifyURLs: true,
+          },
+        }),
       }),
       ISDEV && new webpack.HotModuleReplacementPlugin(),
       ISPROD &&
         new MiniCssExtractPlugin({
           filename: "[name].[contenthash:8].css",
-          chunkFilename: "[name].[contenthash:8].chunk.css"
-        })
+          chunkFilename: "[name].[contenthash:8].chunk.css",
+        }),
     ].filter(Boolean),
     resolve: {
-      modules: ["node_modules", "src"],
+      extensions: [".js", ".jsx", ".json"],
+      modules: [].concat(SRC_DIR, ["node_modules"]),
       alias: {
-        "react-dom": "@hot-loader/react-dom"
-      }
+        "react-dom": "@hot-loader/react-dom",
+      },
     },
     optimization: {
       splitChunks: {
@@ -181,14 +182,14 @@ const config = (env, argv) => {
           commons: {
             chunks: "initial",
             test: /[\\/]node_modules[\\/]/,
-            name: "vendors"
-          }
-        }
-      }
+            name: "vendors",
+          },
+        },
+      },
     },
     performance: {
-      maxAssetSize: 250000
-    }
+      maxAssetSize: 250000,
+    },
   };
 };
 
