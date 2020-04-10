@@ -1,7 +1,13 @@
 import React from "react";
-
+import modules from "components";
 const Header = () => {
-  return <h1>Page not found</h1>;
+  const { Navigation, Button } = modules;
+  return (
+    <header>
+      <Navigation />
+      <Button>Welcome</Button>
+    </header>
+  );
 };
 
 export default Header;

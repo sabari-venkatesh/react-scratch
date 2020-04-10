@@ -41,7 +41,7 @@ const config = (env, argv) => {
         clientLogLevel: "none",
         hot: true,
         overlay: false,
-        open: true,
+        open: false,
         headers: { "Access-Control-Allow-Origin": "*" },
       },
     }),
@@ -174,6 +174,7 @@ const config = (env, argv) => {
       modules: [].concat(SRC_DIR, ["node_modules"]),
       alias: {
         "react-dom": "@hot-loader/react-dom",
+        components: resolve(SRC_DIR, "components"),
       },
     },
     optimization: {

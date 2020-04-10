@@ -1,7 +1,8 @@
 import React from "react";
-
+import modules from "components";
 const Dashboard = () => {
-  return <h1> sdf e</h1>;
+  const { Button } = modules;
+  return <Button size="small">Welcome</Button>;
 };
 
 export default Dashboard;

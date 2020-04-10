@@ -1,22 +1,20 @@
 import { lazy } from "react";
-// /\.\/[^/]+\/[^/]+\/index\.js$/
-const context = require.context("./pages", true, /\.js$/, "lazy");
+const context = require.context(
+  ".",
+  true,
+  /\.\/[^/]+\/[^/]+\/index\.js$/,
+  "lazy"
+);
 
 const modules = {};
 
 context.keys().forEach((path) => {
   const name = path.replace(/^.+\/([^/]+)\/index\.js/, "$1");
   modules[name] = lazy(() =>
-    import(/* webpackChunkName:"[request]"*/ `components/pages/${name}`)
+    import(/* webpackChunkName:"[request]"*/ `${path}`)
   );
 });
 
-export { modules };
+console.log(modules);
 
-// export const Dashboard = lazy(() =>
-//   import(/* webpackChunkName:"Dashboard"*/ "components/pages/Dashboard")
-// );
-
-// export const Home = lazy(() =>
-//   import(/* webpackChunkName:"Home"*/ "components/pages/Home")
-// );
+export default modules;

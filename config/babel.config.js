@@ -1,6 +1,6 @@
 const pkg = require("../package.json");
 
-module.exports = api => {
+module.exports = (api) => {
   // https://babeljs.io/docs/en/config-files#apicache
   // api.env("development") returns true if development environment
   // api.cache.using(() => api.env("development"));
@@ -13,19 +13,21 @@ module.exports = api => {
         "@babel/preset-env",
         {
           targets: {
-            browsers: pkg.browserslist[api.env()]
+            browsers: pkg.browserslist[api.env()],
           },
-          useBuiltIns: false,
+          // useBuiltIns: false,
           modules: false, // Needed for tree shaking to work.
-          debug: false
-        }
+          // debug: false
+        },
       ],
-      ["@babel/preset-react", { development: api.env("development") }]
+      ["@babel/preset-react", { development: api.env("development") }],
     ],
     plugins: [
       "react-hot-loader/babel",
       "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-syntax-dynamic-import"
-    ]
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-proposal-export-default-from",
+      "@babel/plugin-proposal-export-namespace-from",
+    ],
   };
 };

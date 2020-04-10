@@ -1,7 +1,15 @@
 import React from "react";
-import "components/molecules/Navigation";
+import { Link } from "react-router-dom";
 const Header = () => {
-  return <h1>Page not found</h1>;
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="http://www.google.com">Google</Link>
+        </li>
+      </ul>
+    </nav>
+  );
 };
 
 export default Header;

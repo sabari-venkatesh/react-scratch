@@ -1,5 +1,5 @@
-import { modules } from "components";
-
+import modules from "components";
+console.log(modules.Home);
 export const ROUTES = [
   {
     id: "home",
