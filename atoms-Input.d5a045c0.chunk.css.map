@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///input.css"],"names":[],"mappings":"AAAA,QACE,aAAc,CACd,UAAW,CACX,QAAS,CACT,qBAAsB,CACtB,YACF,C","file":"atoms-Input.d5a045c0.chunk.css","sourcesContent":[".input {\n  display: block;\n  width: 100%;\n  margin: 0;\n  box-sizing: border-box;\n  padding: 10px;\n}\n"],"sourceRoot":""}
