@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./components/pages/NotFound/index.js"],"names":["NotFound"],"mappings":";;;;;;iVAEMA,EAAW,WACf,OAAO,+C,EAGMA,EAAA,a,6FAJTA,E","file":"pages-NotFound.f076530d.chunk.js","sourcesContent":["import React from \"react\";\n\nconst NotFound = () => {\n  return <h1>Page not found</h1>;\n};\n\nexport default NotFound;\n"],"sourceRoot":""}
