@@ -1,19 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
-import modules from "components";
+import styles from "./default.css";
 
-const DefaultTemplate = ({ header, children, ...props }) => {
-  const { Header } = modules;
+const DefaultTemplate = ({ children, ...props }) => {
   return (
-    <main {...props}>
-      <Header>{header}</Header>
-      <section>{children}</section>
+    <main {...props} className={styles.root}>
+      {children}
     </main>
   );
-};
-
-DefaultTemplate.propTypes = {
-  children: PropTypes.any.isRequired,
 };
 
 export default DefaultTemplate;

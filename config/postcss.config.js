@@ -12,16 +12,17 @@ module.exports = ({ options: { env } }) => {
       require("postcss-flexbugs-fixes")(),
       require("postcss-mixins")(),
       require("postcss-preset-env")({
-        stage: 2,
+        stage: 1,
         autoprefixer: {
-          flexbox: "no-2009"
+          flexbox: "no-2009",
         },
         // https://github.com/csstools/postcss-preset-env/blob/master/src/lib/plugins-by-id.js#L36
         features: {
           "nesting-rules": true,
-          "color-functional-notation": true
+          "color-functional-notation": true,
+          "custom-properties": true,
         },
-        browsers: pkg.browserslist[env]
+        browsers: pkg.browserslist[env],
       }),
       ...(ISDEV
         ? []
@@ -30,11 +31,11 @@ module.exports = ({ options: { env } }) => {
               preset: [
                 "default",
                 {
-                  discardComments: { removeAll: true }
-                }
-              ]
-            })
-          ])
-    ]
+                  discardComments: { removeAll: true },
+                },
+              ],
+            }),
+          ]),
+    ],
   };
 };

@@ -15,6 +15,4 @@ context.keys().forEach((path) => {
   );
 });
 
-console.log(modules);
-
 export default modules;

@@ -4,7 +4,7 @@ export const ROUTES = [
   {
     id: "home",
     path: "/",
-    component: modules.Home,
+    component: modules.Login,
   },
   {
     id: "dashboard",

@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import styles from "./styles.css";
+import styles from "./button.css";
 
 export const ButtonType = {
   BUTTON: "button",
@@ -23,14 +23,12 @@ const Button = (props) => {
   const { type, onClick, children, theme, size, className, disabled } = props;
 
   const classes = classnames(
-    styles.button,
+    styles.root,
     styles[theme],
     styles[size],
     { [styles.disabled]: disabled },
     className
   );
-
-  console.log(classes);
 
   return (
     <button
