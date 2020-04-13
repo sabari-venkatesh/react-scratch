@@ -28,11 +28,11 @@ const config = (env, argv) => {
     output: {
       path: BUILD_DIR,
       pathinfo: ISPROD,
-      filename: ISDEV ? "[name].js" : "[name].[chunkhash:8].js",
+      filename: ISDEV ? "js/[name].js" : "js/[name].[chunkhash:8].js",
       chunkFilename: ISDEV
-        ? "[name].chunk.js"
-        : "[name].[chunkhash:8].chunk.js",
-      publicPath: "/",
+        ? "chunks/[name].chunk.js"
+        : "chunks/[name].[chunkhash:8].chunk.js",
+      publicPath: ISDEV ? "/" : "./",
     },
     ...(ISDEV && {
       devServer: {
@@ -140,6 +140,10 @@ const config = (env, argv) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        __ISDEV__: ISDEV,
+      }),
+      new webpack.ProgressPlugin(),
       ISPROD && new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
@@ -165,8 +169,8 @@ const config = (env, argv) => {
       ISDEV && new webpack.HotModuleReplacementPlugin(),
       ISPROD &&
         new MiniCssExtractPlugin({
-          filename: "[name].[contenthash:8].css",
-          chunkFilename: "[name].[contenthash:8].chunk.css",
+          filename: "css/[name].[contenthash:8].css",
+          chunkFilename: "css/[name].[contenthash:8].chunk.css",
         }),
     ].filter(Boolean),
     resolve: {

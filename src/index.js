@@ -6,10 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import App from "components/App";
 
 // const store = configureStore({}, { api: api.create() });
-
 render(
   // <Provider store={store}>
-  <BrowserRouter>
+  <BrowserRouter basename={__ISDEV__ ? "/" : "/react-scratch"}>
     <App />
   </BrowserRouter>,
   // </Provider>,

@@ -2,13 +2,11 @@ import React from "react";
 import styles from "./field.css";
 import modules from "components";
 
-const Field = ({ type, error, name, label, placeholder, ...props }) => {
+const Field = ({ error, name, label, placeholder, ...props }) => {
   const { Label, Input } = modules;
   const inputProps = {
-    type,
     id: name,
     name,
-    placeholder,
     "aria-describedby": `${name}Error`,
     ...props,
   };
