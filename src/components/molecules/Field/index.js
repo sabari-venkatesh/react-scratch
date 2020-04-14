@@ -14,7 +14,7 @@ const Field = ({ error, name, label, placeholder, ...props }) => {
     <div className={styles.root}>
       {(label || placeholder) && (
         <Label htmlFor={inputProps.id} className={styles.label}>
-          {label || placeholder}
+          {label || placeholder} {console.log(inputProps)}
         </Label>
       )}
       <Input {...inputProps} />

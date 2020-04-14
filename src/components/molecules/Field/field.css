@@ -8,3 +8,9 @@
   text-transform: uppercase;
   font-size: 0.875rem;
 }
+
+.error {
+  color: var(--error);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}

@@ -1,4 +1,4 @@
-const checkForCloseMatch = (longString, shortString) => {
+function checkForCloseMatch(longString, shortString) {
   // too many false positives with very short strings
   if (shortString.length < 3) return "";
 
@@ -48,9 +48,9 @@ const checkForCloseMatch = (longString, shortString) => {
 
   // if nothing was close, then there wasn't a typo
   return "";
-};
+}
 
-const checkForDomainTypo = (email) => {
+const isCommonDomain = (email) => {
   const domains = [
     "gmail",
     "hotmail",
@@ -66,11 +66,10 @@ const checkForDomainTypo = (email) => {
     const domain = domains[i];
 
     const result = checkForCloseMatch(rightPart, domain);
-
-    if (result) return `${leftPart}@${result}`;
+    if (result) return domains.includes(result.split(".")[0]);
   }
 
-  return "";
+  return domains.includes(rightPart.split(".")[0]);
 };
 
 const checkForCommonTypos = (input) => {
@@ -89,7 +88,7 @@ const checkForCommonTypos = (input) => {
     },
   ];
 
-  typo = commonTypos.find((typo) => typo.pattern.test(input));
+  const typo = commonTypos.find((typo) => typo.pattern.test(input));
 
   if (typo) return typo.fix(input);
 
@@ -99,13 +98,16 @@ const checkForCommonTypos = (input) => {
 const checkTypo = (input) => {
   const email = input.email.trim().toLowerCase();
 
-  return checkForCommonTypos(email) || checkForDomainTypo(email);
+  return checkForCommonTypos(email) || isCommonDomain(email);
 };
 
 const MailValidator = (opts) => {
-  if (opts !== {}) {
-    let suggestedEmail = checkTypo(opts);
-    return suggestedEmail;
+  if (Object.entries(opts).length) {
+    let hasError = checkTypo(opts);
+    console.log(hasError);
+    if (hasError)
+      return `We accept registrations only from official accounts. Please register using your official email id`;
+    return hasError;
   }
 };
 

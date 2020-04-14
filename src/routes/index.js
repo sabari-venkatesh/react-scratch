@@ -3,7 +3,7 @@ export const ROUTES = [
   {
     id: "home",
     path: "/",
-    component: modules.Login,
+    component: modules.Register,
   },
   {
     id: "dashboard",
