@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///default.css"],"names":[],"mappings":"AAAA,QACE,eAAgB,CAChB,gBACF,C","file":"css/templates-Default.5d1a1006.chunk.css","sourcesContent":[".root {\n  max-width: 20rem;\n  margin: 2rem auto;\n}\n"],"sourceRoot":""}
