@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///field.css"],"names":[],"mappings":"AAAA,OACE,kBAAmB,CACnB,cACF,CAEA,QACE,aAAc,CACd,wBAAyB,CACzB,iBACF,C","file":"css/molecules-Field.be26e558.chunk.css","sourcesContent":[".root {\n  margin-bottom: 1rem;\n  font-size: 1rem;\n}\n\n.label {\n  display: block;\n  text-transform: uppercase;\n  font-size: 0.875rem;\n}\n"],"sourceRoot":""}
