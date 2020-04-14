@@ -28,7 +28,7 @@
   \******************/
 /*! no exports provided */
 /*! all exports used */
-/*! ModuleConcatenation bailout: Module is referenced from these modules with unsupported syntax: multi ./index.js (referenced with single entry) */function(e,t,a){"use strict";a.r(t);var o=a(/*! react */0),n=a.n(o),r=a(/*! react-dom */25),s=a(/*! react-router-dom */22),i=a(/*! components/App */19);"undefined"!=typeof reactHotLoaderGlobal&&reactHotLoaderGlobal.default.signature;Object(r.render)(n.a.createElement(s.a,{basename:"/react-scratch"},n.a.createElement(i.default,null)),document.getElementById("app"))},41:
+/*! ModuleConcatenation bailout: Module is referenced from these modules with unsupported syntax: multi ./index.js (referenced with single entry) */function(e,t,a){"use strict";a.r(t);var o=a(/*! react */0),n=a.n(o),r=a(/*! react-dom */25),s=a(/*! react-router-dom */22),i=a(/*! components/App */19);"undefined"!=typeof reactHotLoaderGlobal&&reactHotLoaderGlobal.default.signature;Object(r.render)(n.a.createElement(s.a,{basename:"/react-scratch/"},n.a.createElement(i.default,null)),document.getElementById("app"))},41:
 /*!******************************************************!*\
   !*** ./components lazy \.\/[^/]+\/[^/]+\/index\.js$ ***!
   \******************************************************/
@@ -47,4 +47,4 @@
 /*! exports provided: default */
 /*! all exports used */
 /*! ModuleConcatenation bailout: Module uses injected variables (module) */function(e,t,a){"use strict";a.r(t),function(e){var o,n=a(/*! react */0);(o="undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal.enterModule:void 0)&&o(e);"undefined"!=typeof reactHotLoaderGlobal&&reactHotLoaderGlobal.default.signature;var r=a(41),s={};r.keys().forEach((function(e){var t=e.replace(/^.+\/([^/]+)\/index\.js/,"$1");s[t]=Object(n.lazy)((function(){return a(42)("".concat(e))}))}));var i,l,d=s;t.default=d,(i="undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal.default:void 0)&&(i.register(r,"context","/Users/sabarivenkateshr/Public/dev/react-scratch/src/components/index.js"),i.register(s,"modules","/Users/sabarivenkateshr/Public/dev/react-scratch/src/components/index.js"),i.register(d,"default","/Users/sabarivenkateshr/Public/dev/react-scratch/src/components/index.js")),(l="undefined"!=typeof reactHotLoaderGlobal?reactHotLoaderGlobal.leaveModule:void 0)&&l(e)}.call(this,a(/*! ./../../node_modules/webpack/buildin/harmony-module.js */20)(e))}});
-//# sourceMappingURL=main.8153994a.js.map
+//# sourceMappingURL=main.59ee71d3.js.map
